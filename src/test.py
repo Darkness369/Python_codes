@@ -19,7 +19,7 @@ print(str(hashed_message))
 # print(hashed_message)
 
 message = input('Type a password: ').encode()
-unhashed_message = hashlib.pbkdf2_hmac('sha256', message, salt, 1000000).hex()
+unhashed_message = hashlib.pbkdf2_hmac('sha512', message, salt, 1000000).hex()
 # print(unhashed_message)
 
 
