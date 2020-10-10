@@ -3,10 +3,14 @@ from flask_pymongo import PyMongo
 import hashlib
 import os
 from  dotenv import load_dotenv
+
+
 load_dotenv()
 
+salt = os.getenv('SALT').encode()
+
 app = Flask(__name__)
-app.config['MONGO_URI']= 'mongodb://localhost/apiusers'
+app.config['MONGO_URI']= 'mongodb+srv://FacelessDivine:100100101011010110password10010@cluster0.erp3c.mongodb.net/users?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
 
@@ -16,14 +20,42 @@ def create_user():
         # print(request.json)
         username = request.json['username']
         password = request.json['password']
+        hashed_password = hashlib.pbkdf2_hmac('sha256', password, salt, 100000).hex()
         if username and password:
-                mongo.db.users.insert(
-                        {'username': username, 'password': password}
+                id = mongo.db.users.insert(
+                        {'username': username, 'password': hashed_password}
                 )
-                return {"message": "Usuario guardado"}
+                response = {
+                        'id': str(id),
+                        'username': username,
+                        'password': hashed_password
+                }
+                return response
         else:
-                return {'message': 'error'}
-
+                return not_found()
+        return {'message': 'Received'}
+def not_found(error=None):
+        message= {
+                'message': 'Resource Not Found',
+                'status': 404
+        }
+        return message
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
