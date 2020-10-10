@@ -10,10 +10,7 @@ import dbconfig as db
 load_dotenv()
 
 salt = os.getenv('SALT').encode()
-# print(salt) 
 app = Flask(__name__)
-
-
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
@@ -48,22 +45,18 @@ def get_users():
 @app.route('/users', methods = ['POST'])
 def create_user():
         # Receiving data
-        # print(request.json)
         username = request.json['username']
         password = request.json['password'].encode()
-        
-
         if username and password:
                 hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
                 db.c_users.users.insert(
                         {'username': username, 'password': hashed_password}
                 )
                 response = {
-                        'id': 1,
+                        'id': id,
                         'username': username,
                         'password': hashed_password
                 }
-                # return {'message': 'Received'}
                 return response
         else:
                 return not_found()
