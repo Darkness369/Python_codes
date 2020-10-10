@@ -26,41 +26,63 @@ def delete_user(id):
 @app.route('/users/<id>', methods=['PUT'])
 def update_user(id):
         username = request.json['username']
+        user = db.c_users.users.find_one({'_id': ObjectId(id)})
         password = request.json['password'].encode()
-        if username and password:
-                hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
-                db.c_users.users.update_one({'_id': ObjectId(id)}, {'$set':{
-                'username': username,
-                'password': hashed_password
-                }})
-                response =  jsonify({'message': 'User: '+ id + ' was updated successfully'})
-                return response
-
+        if user != None:
+                if username and password:
+                        hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
+                        db.c_users.users.update_one({'_id': ObjectId(id)}, {'$set':{
+                        'username': username,
+                        'password': hashed_password
+                        }})
+                        response =  jsonify({'message': 'User: '+ id + ' was updated successfully'})
+                        return response
+        else:
+                return {'Alert': 'Id do not match with any username account'}
 @app.route('/users', methods=['GET'])
 def get_users():
         users = db.c_users.users.find()
         response = json_util.dumps(users)
         return Response(response, mimetype='application/json')
-
-@app.route('/users', methods = ['POST'])
+@app.route('/signup', methods = ['POST'])
 def create_user():
         # Receiving data
         username = request.json['username']
+        user = db.c_users.users.find_one({'username':username})
         password = request.json['password'].encode()
-        if username and password:
-                hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
-                db.c_users.users.insert(
-                        {'username': username, 'password': hashed_password}
-                )
-                response = {
-                        'id': id,
-                        'username': username,
-                        'password': hashed_password
-                }
-                return response
+        if user == None:
+                if username and password:
+                        hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
+                        id =  db.c_users.users.insert(
+                                {'username': username, 'password': hashed_password}
+                        )
+                        response = {
+                                'id': str(id),
+                                'username': username,
+                                'password': hashed_password
+                        }
+                        return response
+                else:
+                        return not_found()
+                return {'message': 'Received'}
         else:
-                return not_found()
-        return {'message': 'Received'}
+                return {'Alert': 'Username is already taken, try to login or choose another one'}
+@app.route('/signin',methods=['GET'])
+def login():
+        username = request.json['username']
+        user = db.c_users.users.find_one({'username':username})
+        password = request.json['password'].encode()
+        if user != None:
+                hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
+                if hashed_password == user['password']:
+                        return {'message': 'Login Success',
+                                'response': 'welcome '+ username}
+                else:
+                        return {'message': 'Login failed',
+                                'response': 'Password incorrect for username '+ username}
+        else:
+                return {'message': 'Login Filed',
+                                'response': 'Enter a valid username'}
 @app.errorhandler(404)
 def not_found(error=None):
         response = jsonify({
