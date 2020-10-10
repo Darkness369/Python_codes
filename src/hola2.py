@@ -12,8 +12,9 @@ salt = os.getenv('SALT').encode()
 
 # salt = b'80th9saon+fyzkyesrv$ov9gash*)48n07jp*5zx%di1j$inod'
 
-hashed_message = hashlib.pbkdf2_hmac('sha256', message, salt, 1000000).hex()
-# print(hashed_message)
+hashed_message = hashlib.pbkdf2_hmac('sha512', message, salt, 1000000).hex()
+
+print(str(hashed_message))
 # hashed_message = hashlib.pbkdf2_hmac('sha512', message, salt, 1000000).hex()
 # print(hashed_message)
 

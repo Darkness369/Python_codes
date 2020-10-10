@@ -105,6 +105,8 @@ celerybeat.pid
 .vscode
 # Environments
 src/.env
+src/dbconfig.py
+.env
 .venv
 env/
 venv/
