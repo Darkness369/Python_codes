@@ -77,21 +77,4 @@ def not_found(error=None):
         response.status_code = 404
         return response
 if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    app.run(load_dotenv=True)
