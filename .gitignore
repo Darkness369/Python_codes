@@ -107,6 +107,7 @@ celerybeat.pid
 src/.env
 src/dbconfig.py
 .env
+.flaskenv
 .venv
 env/
 venv/
