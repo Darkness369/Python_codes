@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
   signIn(){
     this.authService.signIn(this.user)
     .subscribe( res => {
-      console.log(res);
+      
       if(res.message == "Login failed"){
       window.alert("Contraseña o Usuario Incorrecto")
       } else {
@@ -35,7 +35,7 @@ export class SigninComponent implements OnInit {
         this.router.navigate(['/private-tasks']);
       }      
     }, err => {
-      window.alert("Contraseña o Usuario Incorrecto")
+      
     })
   }
 
