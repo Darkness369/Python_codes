@@ -7,10 +7,17 @@ from flask.json import jsonify
 from bson import json_util
 from bson.objectid import ObjectId
 import dbconfig as db
+from flask_cors import CORS, cross_origin
+
 load_dotenv()
 
 salt = os.getenv('SALT').encode()
+
 app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
+cors = CORS(app, resources = {r"*":{"origins":"http://localhost:4200"}})
+
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
@@ -44,7 +51,9 @@ def get_users():
         users = db.c_users.users.find()
         response = json_util.dumps(users)
         return Response(response, mimetype='application/json')
+
 @app.route('/signup', methods = ['POST'])
+# @cross_origin(origin='http://localhost:4200',headers=['Content-Type','Authorization'])
 def create_user():
         # Receiving data
         username = request.json['username']
@@ -67,7 +76,8 @@ def create_user():
                 return {'message': 'Received'}
         else:
                 return {'Alert': 'Username is already taken, try to login or choose another one'}
-@app.route('/signin',methods=['GET'])
+
+@app.route('/signin',methods=['POST'])
 def login():
         username = request.json['username']
         user = db.c_users.users.find_one({'username':username})
@@ -83,6 +93,7 @@ def login():
         else:
                 return {'message': 'Login Filed',
                                 'response': 'Enter a valid username'}
+
 @app.errorhandler(404)
 def not_found(error=None):
         response = jsonify({
@@ -92,4 +103,4 @@ def not_found(error=None):
         response.status_code = 404
         return response
 if __name__ == "__main__":
-    app.run(load_dotenv=True)
+        app.run(load_dotenv=True)
