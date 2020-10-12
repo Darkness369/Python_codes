@@ -87,12 +87,9 @@ def login():
                 if hashed_password == user['password']:
                         return {'message': 'Login Success',
                                 'response': 'welcome '+ username}
-                else:
-                        return {'message': 'Login failed',
-                                'response': 'Password incorrect for username '+ username}
         else:
-                return {'message': 'Login Filed',
-                                'response': 'Enter a valid username'}
+                return {'message': 'Login failed',
+                                'response': 'Invalid Username or Password incorrect '}
 
 @app.errorhandler(404)
 def not_found(error=None):
