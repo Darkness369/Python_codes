@@ -16,8 +16,12 @@ export class SignupComponent implements OnInit {
   }
 
   constructor(private authService: AuthService,
-              private router: Router
-              ) { }
+  private router: Router
+  ) { 
+    if (authService.getToken() != null){
+      this.router.navigate(['/private-tasks']);
+    } 
+  }
 
   ngOnInit() {
 
@@ -31,7 +35,8 @@ export class SignupComponent implements OnInit {
       localStorage.setItem('token',res.token);
       this.router.navigate(['/private-tasks'])
     },
-    err => console.log(err)
+    err => window.alert("Username is already taken, try to login or choose another one")
+
     )
   }
 

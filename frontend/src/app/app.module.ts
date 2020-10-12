@@ -8,11 +8,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { SigninComponent } from './components/signin/signin.component';
-import { TasksComponent } from './components/tasks/tasks.component';
 import { PrivateTasksComponent } from './components/private-tasks/private-tasks.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { DeleteusersComponent } from './components/deleteusers/deleteusers.component';
 
 
 
@@ -21,9 +21,9 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
     AppComponent,
     SignupComponent,
     SigninComponent,
-    TasksComponent,
     PrivateTasksComponent,
-    NavbarComponent
+    NavbarComponent,
+    DeleteusersComponent
 
   ],
   imports: [

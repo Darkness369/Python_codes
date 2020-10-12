@@ -10,7 +10,19 @@ export class NavbarComponent implements OnInit {
 
   constructor(public authService: AuthService) { }
 
+  token:string;
+  ver = false
+
   ngOnInit() {
+    this.token = this.authService.getToken()
+    String(this.token)
+
+    setTimeout(() => {
+      if(this.token == "undefined") {
+        this.ver=true;
+      }
+    }, 500);
+
   }
 
 }

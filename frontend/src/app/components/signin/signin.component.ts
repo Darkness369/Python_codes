@@ -15,7 +15,11 @@ export class SigninComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router          
-    ) { }
+    ) {
+      if (authService.getToken() != null){
+        this.router.navigate(['/private-tasks']);
+      } 
+     }
 
   ngOnInit() {
   }
@@ -28,7 +32,7 @@ export class SigninComponent implements OnInit {
       this.router.navigate(['/private-tasks']);
       
     }, err => {
-      console.log(err);
+      window.alert("Contraseña o Usuario Incorrecto")
     })
   }
 

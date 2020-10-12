@@ -10,6 +10,10 @@ export class AuthService {
 
   private URL = 'http://localhost:5000';
 
+  selectUser: any;
+  DatosUser: any[];
+
+
   constructor(private http: HttpClient, private router: Router) { }
 
   signUp(user){
@@ -27,9 +31,15 @@ export class AuthService {
   }
   getToken(){
     return localStorage.getItem('token');
+
   }
+  
+  getTokenUser(){
+    return JSON.parse(localStorage.getItem('token'));
+  }
+
   logOut(){
     localStorage.removeItem('token');
-    this.router.navigate(['/tasks']);
+    this.router.navigate(['/signin']);
   }
 }

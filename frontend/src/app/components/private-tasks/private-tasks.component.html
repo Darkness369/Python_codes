@@ -1,1 +1,20 @@
-<p>private-tasks works!</p>
+<h1 class="mx-auto" style="width: 200px;">USUARIOS</h1>
+
+<table class="table">
+    <thead>
+      <tr >
+        <th scope="col">#</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Editar</th>
+        <th scope="col">Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let users of this.auth.DatosUser; let i = index">
+        <th scope="row">{{i}}</th>
+        <td>{{ users.username}}</td>
+        <td> <button (Click)="update()" class="btn btn-primary" style="margin-left: 75% auto">Editar</button></td>
+        <td> <button (Click)="deleteUsers()" class="btn btn-danger">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>

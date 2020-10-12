@@ -22,8 +22,8 @@
               </li>
             </ng-template>
 
-            <li class="nav-item">
-              <a class="nav-link disabled" routerLinkActive="Active" routerLink="/tasks" tabindex="-1" aria-disabled="true">Administración</a>
+            <li class="nav-item" >
+              <a *ngIf="ver" class="nav-link"   routerLinkActive="Active" routerLink="/private-tasks" tabindex="-1">Administración</a>
             </li>
           </ul>
         </div>
