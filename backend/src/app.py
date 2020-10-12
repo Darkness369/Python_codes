@@ -24,36 +24,40 @@ def get_user(id):
         user = db.c_users.users.find_one({'_id': ObjectId(id)})
         response = json_util.dumps(user)
         return Response(response, mimetype= 'application/json')
+        
 
-@app.route('/users/<id>', methods=['DELETE'])
-def delete_user(id):
-        db.c_users.users.delete_one({'_id': ObjectId(id)})
-        response = jsonify({'message': 'User: '+ id + ' was deleted successfully'})
+@app.route('/users/<username>', methods=['DELETE'])
+def delete_user(username):
+        db.c_users.users.delete_one({'username': username})
+        response = jsonify({'message': 'User: '+ username + ' was deleted successfully'})
         return response
+
+
 @app.route('/users/<id>', methods=['PUT'])
 def update_user(id):
         username = request.json['username']
         user = db.c_users.users.find_one({'_id': ObjectId(id)})
-        password = request.json['password'].encode()
+        # password = request.json['password'].encode()
         if user != None:
-                if username and password:
-                        hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
+                if username:
+                        # hashed_password = hashlib.pbkdf2_hmac('sha512', password, salt, 100000).hex()
+                        usernameold = user['username']
                         db.c_users.users.update_one({'_id': ObjectId(id)}, {'$set':{
-                        'username': username,
-                        'password': hashed_password
-                        }})
-                        response =  jsonify({'message': 'User: '+ id + ' was updated successfully'})
+                        'username': username}})
+                        response =  jsonify({'message': 'User: '+ usernameold + ' was updated successfully to '+ username})
                         return response
         else:
-                return {'Alert': 'Id do not match with any username account'}
+                return {'Alert': 'Username do not match with any username account'}
+
+
 @app.route('/users', methods=['GET'])
 def get_users():
         users = db.c_users.users.find()
         response = json_util.dumps(users)
         return Response(response, mimetype='application/json')
 
+
 @app.route('/signup', methods = ['POST'])
-# @cross_origin(origin='http://localhost:4200',headers=['Content-Type','Authorization'])
 def create_user():
         # Receiving data
         username = request.json['username']
@@ -77,6 +81,7 @@ def create_user():
         else:
                 return {'Alert': 'Username is already taken, try to login or choose another one'}
 
+
 @app.route('/signin',methods=['POST'])
 def login():
         username = request.json['username']
@@ -90,6 +95,7 @@ def login():
         else:
                 return {'message': 'Login failed',
                                 'response': 'Invalid Username or Password incorrect '}
+
 
 @app.errorhandler(404)
 def not_found(error=None):
