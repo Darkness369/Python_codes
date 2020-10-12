@@ -34,8 +34,7 @@ export class SignupComponent implements OnInit {
       console.log(res);
       localStorage.setItem('token',res.token);
       this.router.navigate(['/private-tasks'])
-    },
-    err => window.alert("Username is already taken, try to login or choose another one")
+    },err => window.alert("Username is already taken, try to login or choose another one")
 
     )
   }

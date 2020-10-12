@@ -17,9 +17,9 @@ export class Private_taks_service {
   constructor(private http: HttpClient, private router: Router) { }
     
   Update(user){
-        return this.http.put<any>(this.URL + `/${user._id}`, user);
+        return this.http.put<any>(this.URL + `/users/${user.id}`, user);
     }
   DeleteUser(user){
-        return this.http.delete<any>(this.URL + `/${user._id}`, user);
+        return this.http.delete<any>(this.URL + `/users/${user}`, user);
     }
 }

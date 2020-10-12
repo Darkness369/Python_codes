@@ -12,7 +12,7 @@ import { PrivateTasksComponent } from './components/private-tasks/private-tasks.
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
-import { DeleteusersComponent } from './components/deleteusers/deleteusers.component';
+
 
 
 
@@ -23,7 +23,6 @@ import { DeleteusersComponent } from './components/deleteusers/deleteusers.compo
     SigninComponent,
     PrivateTasksComponent,
     NavbarComponent,
-    DeleteusersComponent
 
   ],
   imports: [
